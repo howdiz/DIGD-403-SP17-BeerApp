@@ -2,48 +2,46 @@
 
 include 'dbConnection.php';
 
-$sql = 'SELECT *  FROM  Breweries';
+$sql = "SELECT
+        Beers.id as beer_id, Beers.name as beerName, style, abv, rating, notes,
+        Breweries.name as BreweryName, city, state, country
+        FROM Beers JOIN Breweries ON Breweries.id = Beers.brewery_id";
 
 $result = $conn->query($sql);
 
-?>
+include 'head.php'; 
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <title> </title>
-        
-        <!-- Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        
-        <!-- Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-        
-        <link href="styles.css" rel="stylesheet">
-        
-        
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        
-        <!-- Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-                
-    </head>
-    <body>
-        <?php include 'nav.php' ?>
-        <div class="container">
-            <h1>Beers</h1>
-            
+?>
+<h1>Beers</h1>
+
+<table class = "table table-striped">
+   <thead>
+      <tr>
+         <th>Name</th>
+         <th>Style</th>
+         <th>ABV</th>
+         <th>Brewery</th>
+         <th>City</th>
+         <th>State</th>
+         <th>Country</th>
+         <th></th>
+         <th></th>
+      </tr>
+   </thead>
+   <tbody>
+
         <?php
               // output data of each row
               while($row = $result->fetch_assoc()) {
-                  echo $row['name'] . " | " . $row['city'] . " | " . $row['state'] .
-                   " | " . $row['country'] . "<br>";
+              echo "<tr><td>" . $row['beerName'] . "</td><td>" . $row['style'] . "</td><td>" . $row['abv'] .
+              "</td><td>" . $row['BreweryName'] . "</td><td>" . $row['city'] . "</td><td>" . $row['state'] .
+              "</td><td>" . $row['country'] . 
+              "</td><td> <a href=deleteBeer.php?beer_id=" . $row['beer_id']  ."> delete beer</a>" . 
+              "</td><td> <a href=beerForm.php?beer_id=" . $row['beer_id']  . "> update beer</a>". "</td></tr>";
               }
         ?>
+               </tbody>
+            </table>
         </div>
     </body>
 </html>    
